@@ -23,4 +23,29 @@ public class CountryEndPoint {
         response.setCountry(countryRepository.findCountry(request.getName()));
         return response;
     }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "createCountryRequest")
+    @ResponsePayload
+    public CreateCountryResponse createCountry(@RequestPayload CreateCountryRequest request) {
+        CreateCountryResponse response = new CreateCountryResponse();
+        response.setCountry(countryRepository.saveCountry(request.getCountry()));
+        return response;
+    }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateCountryRequest")
+    @ResponsePayload
+    public UpdateCountryResponse updateCountry(@RequestPayload UpdateCountryRequest request) {
+        UpdateCountryResponse response = new UpdateCountryResponse();
+        response.setCountry(countryRepository.updateCountry(request.getCountry()));
+        return response;
+    }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteCountryRequest")
+    @ResponsePayload
+    public DeleteCountryResponse deleteCountry(@RequestPayload DeleteCountryRequest request) {
+        DeleteCountryResponse response = new DeleteCountryResponse();
+        countryRepository.deleteCountry(request.getName());
+        response.setStatus("Country deleted successfully");
+        return response;
+    }
 }
